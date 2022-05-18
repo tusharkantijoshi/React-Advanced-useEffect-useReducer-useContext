@@ -34,4 +34,14 @@ e.g.
 
 * Therefore in that first function you can put any side effect code and that code will then only execute when the dependencies specified by you changed and not when the component re-renders. So only when your dependencies changed.
 
+! useReducer()
+* useReducer is another built in Hook and it will help us with state management. So it's a bit like useState, but actually with more capabilities and especially useful for more complex state.
+
+* useReducer is then an alternative to useState. So it's a replacement, if you need a more powerful state management.
+
+* const [state, dispatch] = useReducer(reducer, initialState, defaultState )
+state - variable to be changed in future
+dispatch - a function that can be used to change the state of the variable
+reducer - a function that is automatically triggered, it receives the latest state and returns the updated state
+
 -->

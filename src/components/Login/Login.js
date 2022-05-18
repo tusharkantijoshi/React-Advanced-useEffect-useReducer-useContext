@@ -12,7 +12,8 @@ import AuthContext from '../../store/auth-context';
 import Input from '../UI/Input/Input';
 import classes from './Login.module.css';
 
-//! Validation logic for email input field
+//todo: Reducer function, a function that is automatically triggered, it receives the latest state and returns the updated state.
+//! for email input field
 const emailReducer = (state, action) => {
   if (action.type === 'USER_INPUT') {
     return { value: action.val, isValid: action.val.includes('@') };
@@ -23,7 +24,7 @@ const emailReducer = (state, action) => {
   return { value: '', isValid: false };
 };
 
-//! Validation logic for email input field
+//! for password input field
 const passwordReducer = (state, action) => {
   if (action.type === 'USER_INPUT') {
     return { value: action.val, isValid: action.val.trim().length > 6 };
@@ -34,7 +35,10 @@ const passwordReducer = (state, action) => {
   return { value: '', isValid: false };
 };
 
+
+
 const Login = (props) => {
+  //! here we are using so many states for same input fields therefor we will use useReducer for state management
   // const [enteredEmail, setEnteredEmail] = useState('');
   // const [emailIsValid, setEmailIsValid] = useState();
   // const [enteredPassword, setEnteredPassword] = useState('');
@@ -42,14 +46,19 @@ const Login = (props) => {
 
   const [formIsValid, setFormIsValid] = useState(false);
 
+  //todo: useReducer
+  //! using useReducer so that we can have complex states for one input
+
+  //* for email
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
-    value: '',
-    isValid: null,
+    value: '', //! state for input filed
+    isValid: null, //! state for validation
   });
 
+  //* for password
   const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
-    value: '',
-    isValid: null,
+    value: '', //! state for input filed
+    isValid: null, //! state for validation
   });
 
   const authCtx = useContext(AuthContext);
@@ -60,6 +69,8 @@ const Login = (props) => {
   const { isValid: emailIsValid } = emailState;
   const { isValid: passwordIsValid } = passwordState;
 
+
+  //todo: useEffect
   useEffect(() => {
 
     /*     
@@ -77,29 +88,29 @@ const Login = (props) => {
     };
   }, [emailIsValid, passwordIsValid]); //! [] -> array of dependencies. useEffect function will only run if any dependencies/ state changes. empty [] specify no dependencies, useEffect will run once when our component starts up because thereafter the dependencies/ state never change
 
+
+  //todo: validation logic
+  //! for getting the entered value in the email input field
   const emailChangeHandler = (event) => {
     dispatchEmail({ type: 'USER_INPUT', val: event.target.value });
-
-    // setFormIsValid(
-    //   event.target.value.includes('@') && passwordState.isValid
-    // );
   };
 
+  //! for getting the entered value in the password input field
   const passwordChangeHandler = (event) => {
     dispatchPassword({ type: 'USER_INPUT', val: event.target.value });
-
-    // setFormIsValid(emailState.isValid && event.target.value.trim().length > 6);
   };
 
+  //! for email validation
   const validateEmailHandler = () => {
     dispatchEmail({ type: 'INPUT_BLUR' });
   };
 
+  //! for password validation
   const validatePasswordHandler = () => {
     dispatchPassword({ type: 'INPUT_BLUR' });
   };
 
-  //! validation logic
+  //! for overall form validation logic
   const submitHandler = (event) => {
 
     event.preventDefault(); //! to prevent reload of the entire page after submitting
@@ -114,6 +125,7 @@ const Login = (props) => {
     //! focus = whenever the inputs blur, so whenever they lose focus, so that they also are marked as invalid if I just click in there, enter nothing and click somewhere else.
   };
 
+  //todo: return function
   return (
     <Card className={classes.login}>
 
